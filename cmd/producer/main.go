@@ -73,12 +73,12 @@ func main() {
 	// }
 
 	// Using Word List
+	id := 1
 	for _, eachline := range txtlines {
 		result := kafka.SendMessage(topicName, eachline)
 
 		// Block until the result is returned and a server-generated
 		// ID is returned for the published message.
-		id := 1
 		err := result
 		if err != nil {
 			log.Fatal(err)
