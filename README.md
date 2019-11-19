@@ -1,6 +1,13 @@
 ## Learn Kafka
 Learning kafka using Go and library shopify sarama
 
+### Running Snapshot
+* Snapshot Publisher
+  ![Kafka-Publisher](./snapshot/kafka-producers.png)
+
+* Snapshot Consumer
+  ![Kafka-Consumer](./snapshot/kafka-consumer.png)
+
 ### Publisher
 * Using wordlist `word.txt` for dummy publish message
 
