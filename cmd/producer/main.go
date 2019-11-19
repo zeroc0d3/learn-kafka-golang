@@ -86,8 +86,9 @@ func main() {
 
 		fmt.Printf("## Send Message [ %v => %s ].\n", id, eachline)
 		id = id + 1
+
 		// Test show wordlist
-		fmt.Println(eachline)
+		// fmt.Println(eachline)
 	}
 
 }
