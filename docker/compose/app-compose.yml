@@ -1,0 +1,81 @@
+version: '3.5'
+
+#================================================================================================
+# NETWORK SETUP
+#================================================================================================
+networks:
+  kafka-net:
+    name: ${NETWORKS_NAME}
+    driver: ${NETWORKS_DRIVER}
+    ipam:
+      config:
+        - subnet: 172.112.112.0/16
+
+#================================================================================================
+# VOLUME SETUP
+#================================================================================================
+volumes:
+  kafka:
+    driver: ${VOLUMES_DRIVER}
+  zookeeper:
+    driver: ${VOLUMES_DRIVER}
+  portainer:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+#================================================================================================
+# KAFKA
+#================================================================================================
+  kafka:
+    image: confluentinc/cp-kafka:${KAFKA_VERSION}
+    container_name: ${CONTAINER_KAFKA}
+    ports:
+      - "${PORT_KAFKA}:9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=${CONTAINER_ZOOKEEPER}:${PORT_ZOOKEEPER_CLIENT}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${CONTAINER_KAFKA}:${PORT_KAFKA}
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    privileged: true
+    networks:
+      kafka-net:
+        ipv4_address: ${CONTAINER_IP_KAFKA}
+
+#================================================================================================
+# ZOOKEEPER
+#================================================================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:${ZOOKEEPER_VERSION}
+    container_name: ${CONTAINER_ZOOKEEPER}
+    ports:
+      - "${PORT_ZOOKEEPER_CLIENT}:2181"
+      - "${PORT_ZOOKEEPER_SERVER1}:2888"
+      - "${PORT_ZOOKEEPER_SERVER2}:3888"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=${PORT_ZOOKEEPER_CLIENT}
+    privileged: true
+    networks:
+      kafka-net:
+        ipv4_address: ${CONTAINER_IP_ZOOKEEPER}
+
+#================================================================================================
+# PORTAINER
+#================================================================================================
+  portainer:
+    image: zerolabssyseng/portainer:latest
+    container_name: ${CONTAINER_PORTAINER}
+    ports:
+      - "${PORT_PORTAINER}:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DATA_PORTAINER}:/data
+    environment:
+      - PORTAINER_TEMPLATE=generic
+      - PORTAINER_VERSION=${PORTAINER_VERSION}
+    privileged: true
+    networks:
+      kafka-net:
+        ipv4_address: ${CONTAINER_IP_PORTAINER}
