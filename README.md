@@ -23,6 +23,13 @@ Learning kafka using Go and library shopify sarama
   export KAFKA_TOPIC="kafka-topic"
   ```
 
+* Setup hosts
+  ```
+  vi /etc/hosts
+  ----
+  127.0.0.1  zeroc0d3_kafka   # container_name
+  ```
+
 * Install Dependencies
   ```
   make setup
