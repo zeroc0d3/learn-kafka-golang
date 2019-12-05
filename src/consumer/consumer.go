@@ -26,13 +26,15 @@ func (c *KafkaConsumer) Consume(topics []string, signals chan os.Signal) {
 			go consumeMessage(c.Consumer, topic, partition, chanMessage)
 		}
 	}
-	logrus.Infof("Kafka is consuming....")
+	// Get topic name.
+	topicName := os.Getenv("KAFKA_TOPIC")
+	logrus.Infof("Kafka is consuming [topic: %s]....", topicName)
 
 ConsumerLoop:
 	for {
 		select {
 		case msg := <-chanMessage:
-			logrus.Infof("New Message from kafka, message: %v", string(msg.Value))
+			logrus.Infof("New Message from kafka [topic: %s], message: %v", topicName, string(msg.Value))
 		case sig := <-signals:
 			if sig == os.Interrupt {
 				break ConsumerLoop
@@ -60,3 +62,4 @@ func consumeMessage(consumer sarama.Consumer, topic string, partition int32, c c
 	}
 
 }
+
