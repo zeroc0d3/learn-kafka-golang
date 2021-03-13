@@ -18,8 +18,10 @@ func main() {
 	logrus.SetFormatter(customFormatter)
 
 	kafkaConfig := getKafkaConfig("", "")
+    envBrokerConfig := os.Getenv("KAFKA_BROKER_URL")
 
-	consumers, err := sarama.NewConsumer([]string{"kafka:9092"}, kafkaConfig)
+	// consumers, err := sarama.NewConsumer([]string{"kafka:9092"}, kafkaConfig)
+    consumers, err := sarama.NewConsumer([]string{ envBrokerConfig }, kafkaConfig)
 	if err != nil {
 		logrus.Errorf("Error create kakfa consumer got error %v", err)
 	}

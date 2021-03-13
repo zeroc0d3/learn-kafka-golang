@@ -26,7 +26,10 @@ func main() {
 	logrus.SetFormatter(customFormatter)
 
 	kafkaConfig := getKafkaConfig("", "")
-	producers, err := sarama.NewSyncProducer([]string{"kafka:9092"}, kafkaConfig)
+    envBrokerConfig := os.Getenv("KAFKA_BROKER_URL")
+
+	//producers, err := sarama.NewSyncProducer([]string{"kafka:9092"}, kafkaConfig)
+    producers, err := sarama.NewSyncProducer([]string{ envBrokerConfig }, kafkaConfig)
 	if err != nil {
 		logrus.Errorf("Unable to create kafka producer got error %v", err)
 		return
