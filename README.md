@@ -21,8 +21,12 @@ Learning kafka using Go and library shopify sarama
 * Setup topic name
   ```
   export KAFKA_TOPIC="kafka-topic"
+  ```
+
+* Setup broker & zookeeper connection
+  ```
   export KAFKA_BROKER_URL="kafka:9092"
-  export ZOOKEEPER_URL="kafka:2081"
+  export ZOOKEEPER_URL="zookeeper:2081"
   ```
 
 * Setup hosts
